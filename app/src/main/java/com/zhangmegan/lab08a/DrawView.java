@@ -26,11 +26,42 @@ public class DrawView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Path myPath = new Path();
+        myPath.moveTo(0,getHeight());
+        myPath.lineTo(450, getHeight()-1200);
+        myPath.lineTo(getWidth()-450, getHeight()-1200);
+        myPath.lineTo(getWidth(), getHeight());
+        Paint street = new Paint();
+        street.setColor(Color.parseColor("#9c9491"));
+        canvas.drawPath(myPath, street);
+
+        Paint building = new Paint();
+        building.setColor(Color.parseColor("#9c5240"));
+        myPath.reset();
+        myPath.moveTo(0, getHeight());
+        myPath.lineTo(0, 0);
+        myPath.lineTo(450, 0);
+        myPath.lineTo(450, getHeight()-1200);
+        canvas.drawPath(myPath, building);
+
+        myPath.reset();
+        myPath.moveTo(getWidth(), getHeight());
+        myPath.lineTo(getWidth(), 0);
+        myPath.lineTo(getWidth()-450, 0);
+        myPath.lineTo(getWidth()-450, getHeight()-1200);
+        canvas.drawPath(myPath, building);
+
+        myPath.reset();
+        myPath.moveTo(20, getHeight()-300);
+
+
+        canvas.drawPath(myPath, new Paint());
+
         red.setColor(Color.parseColor("#f24e30"));
         gold.setColor(Color.parseColor("#ffc929"));
         curve.setStyle(Paint.Style.STROKE);
         curve.setStrokeWidth(8);
-        canvas.drawArc(0, liney, 1100, liney+100, 0, 175,
+        canvas.drawArc(0, liney, getWidth(), liney+100, 0, 175,
                 false, curve);
         canvas.drawOval(15, liney+85,175,liney+200,red);
         canvas.drawOval(230, liney+102,230+ovalWidth,
@@ -45,8 +76,11 @@ public class DrawView extends View {
         Rect r2 = new Rect(275,812, 350, 847);
         Rect r3 = new Rect(490,814, 565, 849);
         Rect r4 = new Rect(705,812, 780, 847);
+        Rect r5 = new Rect(920, 795,995,830);
         canvas.drawRect(r, gold);
         canvas.drawRect(r2, gold);
         canvas.drawRect(r3, gold);
+        canvas.drawRect(r4, gold);
+        canvas.drawRect(r5, gold);
     }
 }

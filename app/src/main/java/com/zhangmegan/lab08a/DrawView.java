@@ -19,12 +19,17 @@ public class DrawView extends View {
     Paint red = new Paint();
     Paint gold = new Paint();
     Paint curve = new Paint();
+    Paint star = new Paint();
+    Paint street = new Paint();
     int linex = 0;
     int liney = 600;
     int ovalWidth = 160;
-    int y = 400, dY = 1;
-    int x = getWidth(), dX = 2;
-
+    int y = 600;
+    float rad = 28;
+    int alpha = 70;
+    double dY = 0.5, dR = 0.2;
+    int x = 0, dX = 3, dA = 2;
+    float[][] snow = new float[100][100];
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -35,7 +40,6 @@ public class DrawView extends View {
         super.onDraw(canvas);
 
         //start
-        Paint star = new Paint();
         star.setColor(Color.WHITE);
         canvas.drawCircle(x, y, 4, star);
 
@@ -45,7 +49,7 @@ public class DrawView extends View {
         myPath.lineTo(400, getHeight()-1000);
         myPath.lineTo(getWidth()-400, getHeight()-1000);
         myPath.lineTo(getWidth(), getHeight());
-        Paint street = new Paint();
+
         street.setColor(Color.parseColor("#9c9491"));
         canvas.drawPath(myPath, street);
 
@@ -100,8 +104,25 @@ public class DrawView extends View {
         canvas.drawRect(r4, gold);
         canvas.drawRect(r5, gold);
 
+        Paint light = new Paint();
+        light.setColor(Color.parseColor("#ffdd00"));
+        light.setAlpha(alpha);
+        canvas.drawCircle(95, liney+170, rad, light);
+        canvas.drawCircle(310, liney+187, rad, light);
+        canvas.drawCircle(525,liney+189, rad, light);
+        canvas.drawCircle(740, liney+187, rad, light);
+        canvas.drawCircle(955, liney+170, rad, light);
+
+        for(int i = 0; i < snow.length; i++)
+
         y-= dY;
         x+= dX;
+        if(rad < 28 || rad >= 32)
+            dR = -dR;
+        rad += dR;
+        if(alpha < 70 || alpha >= 110)
+            dA = -dA;
+        alpha += dA;
         invalidate();
 
     }

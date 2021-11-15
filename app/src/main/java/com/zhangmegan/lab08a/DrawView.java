@@ -15,6 +15,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class DrawView extends View {
     Paint red = new Paint();
     Paint gold = new Paint();
@@ -29,7 +31,8 @@ public class DrawView extends View {
     int alpha = 70;
     double dY = 0.5, dR = 0.2;
     int x = 0, dX = 3, dA = 2;
-    float[][] snow = new float[100][100];
+    float dSnx = 1, dSny = 2;
+    ArrayList snowArr;
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -113,7 +116,20 @@ public class DrawView extends View {
         canvas.drawCircle(740, liney+187, rad, light);
         canvas.drawCircle(955, liney+170, rad, light);
 
-        for(int i = 0; i < snow.length; i++)
+        Paint snow = new Paint();
+        snow.setColor(Color.WHITE);
+        snowArr = new ArrayList<ArrayList>();
+        for(int i = 0; i < 300; i++) {
+            ArrayList<Float> dim = new ArrayList<Float>();
+            float x = (float) (Math.random() * (getWidth() + 1));
+            float y = (float) (Math.random() * (getHeight() + 1));
+            dim.add(x);
+            dim.add(y);
+            snowArr.add(dim);
+        }
+
+        Snow s = new Snow(x, y, 7, canvas);
+        s.drawSnow(snow);
 
         y-= dY;
         x+= dX;

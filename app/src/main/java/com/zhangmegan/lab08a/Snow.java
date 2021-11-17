@@ -6,15 +6,14 @@ import android.view.View;
 
 public class Snow {
     Canvas canvas;
-    float centerx, centery, radius;
-    public Snow(float cx, float cy, float r, Canvas c) {
+    float centerx, centery, dX, dY, radius;
+    public Snow(float cx, float cy, Canvas c) {
         canvas = c;
         centerx = cx;
         centery = cy;
-        radius = r;
     }
 
-    public void drawSnow(Paint paint) {
+    public void drawSnow(Paint paint, float radius) {
         canvas.drawCircle(centerx, centery, radius, paint);
     }
 

@@ -16,6 +16,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DrawView extends View {
     Paint red = new Paint();
@@ -26,25 +27,35 @@ public class DrawView extends View {
     int linex = 0;
     int liney = 600;
     int ovalWidth = 160;
-    int y = 600;
     float rad = 28;
     int alpha = 70;
-    double dY = 0.5, dR = 0.2;
-    int x = 0, dX = 3, dA = 2;
-    float dSnx = 1, dSny = 2;
-    ArrayList snowArr;
+    double dR = 0.2;
+    int dA = 2;
+    float sX, sY = 0;
+    ArrayList<ArrayList<Float>> snowArr;
+    ArrayList<Snow> snowflake;
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        snowArr = new ArrayList<ArrayList<Float>>();
+        for(int i = 0; i < 300; i++) {
+            ArrayList<Float> dim = new ArrayList<Float>();
+            float x = (float) (Math.random() * (1081));
+            float y = (float) (Math.random() * (1869));
+            float dX = (float)(Math.random()*2+1);
+            float dY = (float)(Math.random()*3+2);
+            dim.add(x);
+            dim.add(y);
+            dim.add(dX);
+            dim.add(dY);
+            snowArr.add(dim);
+        }
+        System.out.println(getHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        //start
-        star.setColor(Color.WHITE);
-        canvas.drawCircle(x, y, 4, star);
 
         // street
         Path myPath = new Path();
@@ -118,21 +129,21 @@ public class DrawView extends View {
 
         Paint snow = new Paint();
         snow.setColor(Color.WHITE);
-        snowArr = new ArrayList<ArrayList>();
-        for(int i = 0; i < 300; i++) {
-            ArrayList<Float> dim = new ArrayList<Float>();
-            float x = (float) (Math.random() * (getWidth() + 1));
-            float y = (float) (Math.random() * (getHeight() + 1));
-            dim.add(x);
-            dim.add(y);
-            snowArr.add(dim);
+        snow.setAlpha(150);
+
+        System.out.println(getHeight());
+        System.out.println(getWidth());
+
+        snowflake = new ArrayList<Snow>();
+        for(int i = 0; i < snowArr.size(); i++) {
+            ArrayList<Float> dim = snowArr.get(i);
+            Snow s = new Snow(dim.get(0)+dim.get(2), dim.get(1)+dim.get(3), canvas);
+            s.drawSnow(snow, 7);
+            dim.set(2, dim.get(2)*2);
+            dim.set(3, dim.get(3)*2);
+            snowflake.add(s);
         }
 
-        Snow s = new Snow(x, y, 7, canvas);
-        s.drawSnow(snow);
-
-        y-= dY;
-        x+= dX;
         if(rad < 28 || rad >= 32)
             dR = -dR;
         rad += dR;

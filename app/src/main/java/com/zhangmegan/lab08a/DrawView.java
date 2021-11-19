@@ -24,6 +24,7 @@ public class DrawView extends View {
     Paint curve = new Paint();
     Paint star = new Paint();
     Paint street = new Paint();
+    Paint prints = new Paint();
     int linex = 0;
     int liney = 600;
     int ovalWidth = 160;
@@ -33,19 +34,20 @@ public class DrawView extends View {
     int dA = 2;
     float sX, sY = 0;
     ArrayList<ArrayList<Float>> snowArr;
-    ArrayList<Snow> snowflake;
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         snowArr = new ArrayList<ArrayList<Float>>();
-        for(int i = 0; i < 300; i++) {
+        for(int i = 0; i < 450; i++) {
             ArrayList<Float> dim = new ArrayList<Float>();
             float x = (float) (Math.random() * (1081));
             float y = (float) (Math.random() * (1869));
-            float dX = (float)(Math.random()*2+1);
-            float dY = (float)(Math.random()*3+2);
+            float dX = (float)(Math.random()*1.5+1.5);
+            float dY = (float)(Math.random()*2+4);
             dim.add(x);
             dim.add(y);
+            dim.add((float)0);
+            dim.add((float) 0);
             dim.add(dX);
             dim.add(dY);
             snowArr.add(dim);
@@ -60,8 +62,8 @@ public class DrawView extends View {
         // street
         Path myPath = new Path();
         myPath.moveTo(0,getHeight());
-        myPath.lineTo(400, getHeight()-1000);
-        myPath.lineTo(getWidth()-400, getHeight()-1000);
+        myPath.lineTo(460, getHeight()-1300);
+        myPath.lineTo(getWidth()-460, getHeight()-1300);
         myPath.lineTo(getWidth(), getHeight());
 
         street.setColor(Color.parseColor("#9c9491"));
@@ -73,16 +75,23 @@ public class DrawView extends View {
         myPath.reset();
         myPath.moveTo(0, getHeight());
         myPath.lineTo(0, 0);
-        myPath.lineTo(400, 0);
-        myPath.lineTo(400, getHeight()-1000);
+        myPath.lineTo(460, 0);
+        myPath.lineTo(460, getHeight()-1300);
         canvas.drawPath(myPath, building);
 
         myPath.reset();
         myPath.moveTo(getWidth(), getHeight());
         myPath.lineTo(getWidth(), 0);
-        myPath.lineTo(getWidth()-400, 0);
-        myPath.lineTo(getWidth()-400, getHeight()-1000);
+        myPath.lineTo(getWidth()-460, 0);
+        myPath.lineTo(getWidth()-460, getHeight()-1300);
         canvas.drawPath(myPath, building);
+
+        myPath.reset();
+        myPath.moveTo(40, 600);
+        myPath.lineTo(130, 690);
+        myPath.lineTo(220, 600);
+        myPath.lineTo(130, 510);
+        canvas.drawPath(myPath, new Paint());
 
         // door
 //        myPath.reset();
@@ -129,19 +138,22 @@ public class DrawView extends View {
 
         Paint snow = new Paint();
         snow.setColor(Color.WHITE);
-        snow.setAlpha(150);
+        snow.setAlpha(130);
 
-        System.out.println(getHeight());
-        System.out.println(getWidth());
-
-        snowflake = new ArrayList<Snow>();
         for(int i = 0; i < snowArr.size(); i++) {
             ArrayList<Float> dim = snowArr.get(i);
             Snow s = new Snow(dim.get(0)+dim.get(2), dim.get(1)+dim.get(3), canvas);
-            s.drawSnow(snow, 7);
-            dim.set(2, dim.get(2)*2);
-            dim.set(3, dim.get(3)*2);
-            snowflake.add(s);
+            s.drawSnow(snow, 6);
+            dim.set(2, dim.get(2)+dim.get(4));
+            dim.set(3, dim.get(3)+dim.get(5));
+            if(dim.get(0)+dim.get(2) > getWidth()) {
+                dim.set(2, (float)0);
+                dim.set(0, (float)0);
+            }
+            if(dim.get(1)+dim.get(3) > getHeight()) {
+                dim.set(3, (float)0);
+                dim.set(1, (float)0);
+            }
         }
 
         if(rad < 28 || rad >= 32)
